@@ -1,0 +1,31 @@
+{
+  "name": "vite-plugin-wc-css",
+  "version": "1.0.0",
+  "description": "A vite plugin to inject css into web components' shadow dom",
+  "author": "Andrea Cappuccio <hood@null.net>",
+  "license": "ISC",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "webcomponents",
+    "css",
+    "style",
+    "shadow-dom"
+  ],
+  "main": "dist/plugin.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "prepare": "yarn build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "prettier": "^3.0.3",
+    "rollup": "^4.2.0",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}
