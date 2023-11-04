@@ -1,9 +1,11 @@
+import type { OutputAsset, OutputBundle, OutputChunk } from "rollup";
 import type { Plugin } from "vite";
-import type { OutputAsset, OutputChunk } from "rollup";
+
+import { PLUGIN_NAME } from "./lib/constants";
+import { PluginError } from "./lib/pluginError";
+import { checkCSSOutput } from "./lib/checkCSSOutput";
 
 type PluginConfig = {};
-
-const PLUGIN_NAME = "vite-plugin-shadow-style";
 
 export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
   return {
@@ -20,8 +22,8 @@ export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
         }
 
         if (userConfig.build.cssCodeSplit) {
-          throw new Error(
-            `[${PLUGIN_NAME}] 'build.cssCodeSplit' option is set to true, it must be false.`
+          throw new PluginError(
+            `'build.cssCodeSplit' option is set to true, it must be false.`
           );
         }
       }
@@ -42,10 +44,13 @@ export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
       );
 
       if (!injectionCandidateName || !outputBundle[injectionCandidateName])
-        throw new Error(`[${PLUGIN_NAME}] Injection candidate not found!`);
+        throw new PluginError("Injection candidate not found!");
+
+      // NOTE: This is a workaround for a wrongfully reported type mismatch.
+      checkCSSOutput(outputBundle as OutputBundle);
 
       if (!injectionTargetName || !outputBundle[injectionTargetName])
-        throw new Error(`[${PLUGIN_NAME}] Injection target not found!`);
+        throw new PluginError("Injection target not found!");
 
       const injectionCandidate = outputBundle[
         injectionCandidateName
@@ -61,4 +66,4 @@ export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
       return;
     }
   };
-};
+}
