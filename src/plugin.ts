@@ -5,7 +5,7 @@ type PluginConfig = {};
 
 const PLUGIN_NAME = "vite-plugin-shadow-style";
 
-export default (pluginConfig: PluginConfig = {}): Plugin => {
+export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
   return {
     name: PLUGIN_NAME,
 

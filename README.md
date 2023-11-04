@@ -60,6 +60,8 @@ Now, all you'll need to do is load the plugin in your vite configuration, as the
 last item in the `plugins` array:
 
 ```ts
+import { shadowStyle } from 'vite-plugin-shadow-style';
+
 export default defineConfig({
   build: {
     rollupOptions: {
