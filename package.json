@@ -5,6 +5,10 @@
   "description": "A vite plugin to inject css into web components' shadow dom",
   "author": "Andrea Cappuccio <hood@null.net>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hood/vite-plugin-shadow-style.git"
+  },
   "keywords": [
     "vite",
     "vite-plugin",
