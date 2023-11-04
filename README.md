@@ -1,7 +1,15 @@
 # vite-plugin-shadow-style
 
+<center>
+  <img src="logo.png" />
+</center>
 
-## How to use
+## What it does
+This plugin allows you to inject css styles into the shadow root of your web
+components.
+
+
+## How to use it
 Declare your entry point like this:
 
 ```tsx
