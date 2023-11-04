@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "build": "tsc -p .",
-    "prepare": "yarn build"
+    "prepare": "tsc -p ."
   },
   "devDependencies": {
     "@types/node": "^20.8.10",
