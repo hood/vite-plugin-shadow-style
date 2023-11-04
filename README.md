@@ -9,6 +9,13 @@ This plugin allows you to inject css styles into the shadow root of your web
 components.
 
 
+## How to install
+Just run a simple
+```sh
+npm i -D vite-plugin-shadow-style
+```
+
+
 ## How to use it
 Declare your entry point like this:
 
