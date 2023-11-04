@@ -1,8 +1,8 @@
 # vite-plugin-shadow-style
 
-<center>
-  <img src="logo.png" />
-</center>
+<p align="center">
+  <img src="logo.png" height="256" width="256" />
+</p>
 
 ## What it does
 This plugin allows you to inject css styles into the shadow root of your web
