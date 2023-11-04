@@ -3,7 +3,7 @@ import type { OutputAsset, OutputChunk } from "rollup";
 
 type PluginConfig = {};
 
-const PLUGIN_NAME = "vite-plugin-wc-css";
+const PLUGIN_NAME = "vite-plugin-shadow-style";
 
 export default (pluginConfig: PluginConfig = {}): Plugin => {
   return {
@@ -54,8 +54,8 @@ export default (pluginConfig: PluginConfig = {}): Plugin => {
       const injectionTarget = outputBundle[injectionTargetName] as OutputChunk;
 
       injectionTarget.code = injectionTarget.code.replace(
-        "__SHADOW_CSS",
-        "`/* SHADOW_CSS */\n" + injectionCandidate.source + "`"
+        "SHADOW_STYLE",
+        `\`${injectionCandidate.source}\``
       );
 
       return;
