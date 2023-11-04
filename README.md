@@ -1,7 +1,7 @@
 # vite-plugin-shadow-style
 
 <p align="center">
-  <img src="logo.png" height="256" width="256" />
+  <img src="https://i.ibb.co/fFLbQ9V/shadow-5-removebg-preview.png" height="256" width="256" />
 </p>
 
 ## What it does
