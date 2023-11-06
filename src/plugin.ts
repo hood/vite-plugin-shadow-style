@@ -4,6 +4,8 @@ import type { Plugin } from "vite";
 import { PLUGIN_NAME } from "./lib/constants";
 import { PluginError } from "./lib/pluginError";
 import { checkCSSOutput } from "./lib/checkCSSOutput";
+import { findInjectionCandidate } from "./lib/findInjectionCandidate";
+import { findInjectionTarget } from "./lib/findInjectionTarget";
 
 type PluginConfig = {};
 
@@ -29,34 +31,16 @@ export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
       }
     },
 
+    // NOTE: The outputBundle casting is a workaround for a wrongfully reported
+    // type mismatch.
     async generateBundle(normalizedOutputOptions, outputBundle, isWrite) {
-      const injectionCandidateName = Object.keys(outputBundle).find(
-        key =>
-          outputBundle[key]?.name?.includes(".css") &&
-          "source" in outputBundle[key]
-      );
-
-      const injectionTargetName = Object.keys(outputBundle).find(
-        key =>
-          "isEntry" in outputBundle[key] &&
-          "code" in outputBundle[key] &&
-          Object.getOwnPropertyDescriptor(outputBundle[key], "isEntry")?.value
-      );
-
-      if (!injectionCandidateName || !outputBundle[injectionCandidateName])
-        throw new PluginError("Injection candidate not found!");
-
-      // NOTE: This is a workaround for a wrongfully reported type mismatch.
       checkCSSOutput(outputBundle as OutputBundle);
 
-      if (!injectionTargetName || !outputBundle[injectionTargetName])
-        throw new PluginError("Injection target not found!");
+      const injectionCandidate = findInjectionCandidate(
+        outputBundle as OutputBundle
+      );
 
-      const injectionCandidate = outputBundle[
-        injectionCandidateName
-      ] as OutputAsset;
-
-      const injectionTarget = outputBundle[injectionTargetName] as OutputChunk;
+      const injectionTarget = findInjectionTarget(outputBundle as OutputBundle);
 
       injectionTarget.code = injectionTarget.code.replace(
         "SHADOW_STYLE",
