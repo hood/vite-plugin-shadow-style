@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "CommonJS",
     "moduleResolution": "Node",
+    "declaration": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
