@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-shadow-style",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A vite plugin to inject css into web components' shadow dom",
   "author": "Andrea Cappuccio <hood@null.net>",
   "license": "ISC",
