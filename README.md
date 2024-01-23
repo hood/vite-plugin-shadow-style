@@ -88,3 +88,15 @@ export default defineConfig({
   },
 });
 ```
+
+## Handling conflicts
+In some situations, a few conflicts may occur, given the fact that CSS classes may get injected by Vite inside of your bundles, translated in `const` declarations at the top level of your webcomponents' Javascript bundle. When importing more than one WebComponent at a time, those top-level declarations may have clashes due to their usage of the same names across different classes in different components. To solve this issue, you can use the `iife` flag of this plugin, in order to wrap the output bundle code in an IIFE, avoiding global-level declarations and related issues.
+
+Example:
+```ts
+// ...
+rollupOptions: {
+  shadowStyle({ iife: true }),
+},
+// ...
+
