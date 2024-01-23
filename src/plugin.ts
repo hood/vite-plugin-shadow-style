@@ -7,9 +7,19 @@ import { checkCSSOutput } from "./lib/checkCSSOutput";
 import { findInjectionCandidate } from "./lib/findInjectionCandidate";
 import { findInjectionTarget } from "./lib/findInjectionTarget";
 
-type PluginConfig = {};
+type PluginConfig = {
+  /**
+   * Wrap the output bundle in an IIFE. This is needed in order to avoid issues
+   * with classnames used across different webcomponents in the same page, which
+   * get translated to constants with the same identifier at the global scope,
+   * causing conflicts.
+   */
+  iife?: boolean;
+};
 
-export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
+export function shadowStyle(
+  pluginConfig: PluginConfig = { iife: false }
+): Plugin {
   return {
     name: PLUGIN_NAME,
 
@@ -42,10 +52,14 @@ export function shadowStyle(pluginConfig: PluginConfig = {}): Plugin {
 
       const injectionTarget = findInjectionTarget(outputBundle as OutputBundle);
 
+      // Swap the style placeholder with the style to inject.
       injectionTarget.code = injectionTarget.code.replace(
         "SHADOW_STYLE",
         `\`${injectionCandidate.source}\``
       );
+
+      if (pluginConfig.iife)
+        injectionTarget.code = `(() => {${injectionTarget.code}})();`;
 
       return;
     }
