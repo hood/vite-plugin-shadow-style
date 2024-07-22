@@ -44,24 +44,30 @@ export function shadowStyle(
     // NOTE: The outputBundle casting is a workaround for a wrongfully reported
     // type mismatch.
     async generateBundle(normalizedOutputOptions, outputBundle, isWrite) {
-      checkCSSOutput(outputBundle as OutputBundle);
+      try {
+        checkCSSOutput(outputBundle as OutputBundle);
 
-      const injectionCandidate = findInjectionCandidate(
-        outputBundle as OutputBundle
-      );
+        const injectionCandidate = findInjectionCandidate(
+          outputBundle as OutputBundle
+        );
 
-      const injectionTarget = findInjectionTarget(outputBundle as OutputBundle);
+        const injectionTarget = findInjectionTarget(
+          outputBundle as OutputBundle
+        );
 
-      // Swap the style placeholder with the style to inject.
-      injectionTarget.code = injectionTarget.code.replace(
-        "SHADOW_STYLE",
-        `\`${injectionCandidate.source}\``
-      );
+        // Swap the style placeholder with the style to inject.
+        injectionTarget.code = injectionTarget.code.replace(
+          "SHADOW_STYLE",
+          `\`${injectionCandidate.source}\``
+        );
 
-      if (pluginConfig.iife)
-        injectionTarget.code = `(() => {${injectionTarget.code}})();`;
-
-      return;
+        if (pluginConfig.iife)
+          injectionTarget.code = `(() => {${injectionTarget.code}})();`;
+      } catch (error) {
+        this.warn((error as PluginError).message);
+      } finally {
+        return;
+      }
     }
   };
 }
