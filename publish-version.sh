@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+npm run build
+
 read -p "Enter the version you want to publish: " version
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
