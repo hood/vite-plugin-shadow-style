@@ -16,4 +16,6 @@ git tag "v$version"
 
 git push --tags
 
+git push
+
 npm publish
