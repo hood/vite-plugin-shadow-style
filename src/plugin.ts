@@ -15,10 +15,15 @@ type PluginConfig = {
    * causing conflicts.
    */
   iife?: boolean;
+  /**
+   * Filter the output css content. This can be required as it is possible that packages
+   * which generate css include extra characters or metadata that is not desired.
+   */
+  filterOutput?: (out: string) => string
 };
 
 export function shadowStyle(
-  pluginConfig: PluginConfig = { iife: false }
+  pluginConfig: PluginConfig = { iife: false, filterOutput: (out) => out }
 ): Plugin {
   return {
     name: PLUGIN_NAME,
@@ -58,7 +63,7 @@ export function shadowStyle(
         // Swap the style placeholder with the style to inject.
         injectionTarget.code = injectionTarget.code.replace(
           "SHADOW_STYLE",
-          `\`${injectionCandidate.source}\``
+          `\`${pluginConfig.filterOutput?.(injectionCandidate.source as string)}\``
         );
 
         if (pluginConfig.iife)
