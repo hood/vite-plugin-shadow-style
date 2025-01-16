@@ -55,6 +55,11 @@ export function shadowStyle(
           outputBundle as OutputBundle
         );
 
+        if (typeof injectionCandidate.source !== "string")
+          throw new Error(
+            "The source of the injection candidate is not a string."
+          );
+
         const escapedStyles = injectionCandidate.source.replace(/`/g, "\\`");
 
         // Swap the style placeholder with the style to inject.
