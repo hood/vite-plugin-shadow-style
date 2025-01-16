@@ -55,10 +55,12 @@ export function shadowStyle(
           outputBundle as OutputBundle
         );
 
+        const escapedStyles = injectionCandidate.source.replace(/`/g, "\\`");
+
         // Swap the style placeholder with the style to inject.
         injectionTarget.code = injectionTarget.code.replace(
           "SHADOW_STYLE",
-          `\`${injectionCandidate.source}\``
+          `\`${escapedStyles}\``
         );
 
         if (pluginConfig.iife)
