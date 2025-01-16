@@ -19,11 +19,14 @@ type PluginConfig = {
    * Transform the output css content. This can be required as it is possible that packages
    * which generate css include extra characters or metadata that is not desired.
    */
-  transformOutput?: (out: string) => string
+  transformOutput?: (out: string) => string;
 };
 
 export function shadowStyle(
-  pluginConfig: PluginConfig = { iife: false, transformOutput: (out) => out }
+  pluginConfig: PluginConfig = {
+    iife: false,
+    transformOutput: (out: string) => out
+  }
 ): Plugin {
   return {
     name: PLUGIN_NAME,
@@ -67,10 +70,13 @@ export function shadowStyle(
 
         const escapedStyles = injectionCandidate.source.replace(/`/g, "\\`");
 
+        const outputTransformer =
+          pluginConfig.transformOutput ?? ((out: string) => out);
+
         // Swap the style placeholder with the style to inject.
         injectionTarget.code = injectionTarget.code.replace(
           "SHADOW_STYLE",
-          `\`${pluginConfig.transformOutput(escapedStyles as string)}\``
+          `\`${outputTransformer(escapedStyles as string)}\``
         );
 
         if (pluginConfig.iife)
