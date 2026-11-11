@@ -24,7 +24,8 @@
   ],
   "scripts": {
     "build": "tsc -p .",
-    "prepare": "tsc -p ."
+    "prepare": "tsc -p .",
+    "test": "tsc -p . && node --test"
   },
   "devDependencies": {
     "@types/node": "^20.8.10",
