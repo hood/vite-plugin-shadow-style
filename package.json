@@ -16,6 +16,18 @@
     "style",
     "shadow-dom"
   ],
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26.13.1",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.18.0",
+      "onFail": "download"
+    }
+  },
   "main": "dist/plugin.js",
   "types": "dist/plugin.d.ts",
   "files": [
@@ -27,11 +39,14 @@
     "prepare": "tsc -p .",
     "test": "tsc -p . && node --test"
   },
+  "peerDependencies": {
+    "vite": ">=4"
+  },
   "devDependencies": {
-    "@types/node": "^20.8.10",
+    "@types/node": "^26.6.6",
     "prettier": "^3.0.3",
     "rollup": "^4.2.0",
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0"
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
   }
 }

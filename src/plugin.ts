@@ -1,4 +1,4 @@
-import type { Plugin, Rollup } from "vite";
+import type { Plugin, Rollup } from "vite" with { "resolution-mode": "import" };
 
 import { PLACEHOLDER, PLUGIN_NAME } from "./lib/constants";
 import { PluginError } from "./lib/pluginError";
@@ -50,10 +50,15 @@ function lineOf(starts: number[], offset: number): number {
   return low;
 }
 
+/** Vite 8 appends this to CSS assets and strips it after our hook runs. */
+const VITE_HASH_MARKER = /\/\*\$vite\$:\d+\*\//g;
+
 function readCss(asset: Rollup.OutputAsset): string {
-  return typeof asset.source === "string"
-    ? asset.source
-    : new TextDecoder().decode(asset.source);
+  const source =
+    typeof asset.source === "string"
+      ? asset.source
+      : new TextDecoder().decode(asset.source);
+  return source.replace(VITE_HASH_MARKER, "");
 }
 
 function inject(

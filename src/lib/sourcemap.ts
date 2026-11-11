@@ -1,4 +1,4 @@
-import type { Rollup } from "vite";
+import type { Rollup } from "vite" with { "resolution-mode": "import" };
 
 const BASE64 =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
