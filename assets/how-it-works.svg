@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 22 1020 578" width="1020" height="578" role="img" aria-labelledby="t d">
+  <title id="t">How vite-plugin-shadow-style works</title>
+  <desc id="d">Your component references SHADOW_STYLE and imports CSS. Vite builds a JS chunk where SHADOW_STYLE is still undefined plus a CSS asset. shadowStyle() inlines the CSS into the chunk as a string, so the styles land inside the shadow root.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#0a0d13"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#16122a"/>
+      <stop offset="1" stop-color="#110f1d"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <marker id="dot" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6">
+      <circle cx="3" cy="3" r="3" fill="#a78bfa"/>
+    </marker>
+  </defs>
+  <style>
+    .sans { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .h1 { font-size: 22px; font-weight: 600; fill: #e6edf3; }
+    .h2 { font-size: 14.5px; font-weight: 600; fill: #e6edf3; }
+    .num { font-size: 11.5px; font-weight: 700; fill: #c4b5fd; }
+    .card { fill: #161b22; stroke: #30363d; }
+    .file { fill: #0d1117; stroke: #262c36; }
+    .tab { font-size: 10.5px; fill: #7d8590; }
+    .code { font-size: 11px; fill: #e6edf3; }
+    .kw { fill: #ff7b72; } .str { fill: #a5d6ff; } .fn { fill: #d2a8ff; }
+    .prop { fill: #79c0ff; } .cm { fill: #7d8590; font-style: italic; }
+    .sel { fill: #7ee787; } .tag { fill: #7ee787; } .ph { fill: #f0b429; font-weight: 600; }
+    .ok { fill: #3fb950; } .muted { fill: #7d8590; } .purple { fill: #c4b5fd; }
+    .note { font-size: 11px; fill: #7d8590; }
+    .step-title { font-size: 13.5px; font-weight: 600; fill: #e6edf3; }
+    .step-desc { font-size: 12px; fill: #8b949e; }
+  </style>
+
+  <rect y="22" width="1020" height="578" rx="18" fill="url(#bg)"/>
+  <rect x="0.5" y="22.5" width="1019" height="577" rx="18" fill="none" stroke="#21262d"/>
+  <ellipse cx="677" cy="430" rx="360" ry="150" fill="url(#glow)"/>
+
+  <!-- header -->
+  <text x="30" y="72" class="sans h1">Your CSS, inlined into every shadow root at build time</text>
+
+  <!-- 1 · source -->
+  <g transform="translate(30 0)">
+    <rect x="0" y="104" width="290" height="296" rx="14" class="card"/>
+    <circle cx="26" cy="132" r="11" fill="#a78bfa" fill-opacity="0.14" stroke="#a78bfa" stroke-opacity="0.6"/>
+    <text x="26" y="136" text-anchor="middle" class="sans num">1</text>
+    <text x="46" y="137" class="sans h2">Your component</text>
+
+    <rect x="14" y="152" width="262" height="128" rx="8" class="file"/>
+    <text x="26" y="170" class="mono tab">my-element.ts</text>
+    <rect x="156" y="235" width="84" height="15" rx="3" fill="#f0b429" fill-opacity="0.13"/>
+    <line x1="14" y1="179" x2="276" y2="179" stroke="#262c36"/>
+    <text class="mono code" xml:space="preserve">
+      <tspan x="26" y="198"><tspan class="kw">import</tspan> <tspan class="str">"./card.css"</tspan>;</tspan>
+      <tspan x="26" y="214"><tspan class="kw">const</tspan> style =</tspan>
+      <tspan x="26" y="230">  document.<tspan class="fn">createElement</tspan>(<tspan class="str">"style"</tspan>);</tspan>
+      <tspan x="26" y="246">style.<tspan class="prop">textContent</tspan> = <tspan class="ph">SHADOW_STYLE</tspan>;</tspan>
+      <tspan x="26" y="262">shadow.<tspan class="fn">append</tspan>(style);</tspan>
+    </text>
+
+    <rect x="14" y="292" width="262" height="96" rx="8" class="file"/>
+    <text x="26" y="310" class="mono tab">card.css</text>
+    <line x1="14" y1="319" x2="276" y2="319" stroke="#262c36"/>
+    <text class="mono code" xml:space="preserve">
+      <tspan x="26" y="338"><tspan class="sel">.card</tspan> { <tspan class="prop">padding</tspan>: <tspan class="str">1rem</tspan>; }</tspan>
+      <tspan x="26" y="354"><tspan class="sel">.title</tspan> { <tspan class="prop">color</tspan>: <tspan class="str">#c4b5fd</tspan>; }</tspan>
+      <tspan x="26" y="370" class="cm">/* + every CSS it imports */</tspan>
+    </text>
+  </g>
+
+  <!-- 2 · vite build -->
+  <g transform="translate(365 0)">
+    <rect x="0" y="104" width="290" height="296" rx="14" class="card"/>
+    <circle cx="26" cy="132" r="11" fill="#a78bfa" fill-opacity="0.14" stroke="#a78bfa" stroke-opacity="0.6"/>
+    <text x="26" y="136" text-anchor="middle" class="sans num">2</text>
+    <text x="46" y="137" class="sans h2">vite build</text>
+
+    <rect x="14" y="152" width="262" height="100" rx="8" class="file"/>
+    <text x="26" y="170" class="mono tab">out.js</text>
+    <line x1="14" y1="179" x2="276" y2="179" stroke="#262c36"/>
+    <rect x="156" y="223" width="84" height="15" rx="3" fill="#f0b429" fill-opacity="0.13"/>
+    <text class="mono code" xml:space="preserve">
+      <tspan x="26" y="198" class="cm">// CSS went to a separate file,</tspan>
+      <tspan x="26" y="214" class="cm">// the placeholder is undefined</tspan>
+      <tspan x="26" y="234">style.<tspan class="prop">textContent</tspan> = <tspan class="ph">SHADOW_STYLE</tspan>;</tspan>
+    </text>
+
+    <rect x="14" y="264" width="262" height="84" rx="8" class="file"/>
+    <text x="26" y="282" class="mono tab">style.css</text>
+    <line x1="14" y1="291" x2="276" y2="291" stroke="#262c36"/>
+    <text class="mono code" xml:space="preserve">
+      <tspan x="26" y="310"><tspan class="sel">.card</tspan>{<tspan class="prop">padding</tspan>:<tspan class="str">1rem</tspan>}</tspan>
+      <tspan x="26" y="326"><tspan class="sel">.title</tspan>{<tspan class="prop">color</tspan>:<tspan class="str">#c4b5fd</tspan>}</tspan>
+    </text>
+
+    <text x="145" y="377" text-anchor="middle" class="sans note">a stylesheet in &lt;head&gt; can't reach a shadow root</text>
+  </g>
+
+  <!-- 3 · output -->
+  <g transform="translate(700 0)">
+    <rect x="0" y="104" width="290" height="296" rx="14" class="card" stroke="#a78bfa" stroke-opacity="0.45"/>
+    <circle cx="26" cy="132" r="11" fill="#a78bfa" fill-opacity="0.14" stroke="#a78bfa" stroke-opacity="0.6"/>
+    <text x="26" y="136" text-anchor="middle" class="sans num">3</text>
+    <text x="46" y="137" class="sans h2">After <tspan class="mono purple" font-weight="500">shadowStyle()</tspan></text>
+
+    <rect x="14" y="152" width="262" height="96" rx="8" class="file"/>
+    <text x="26" y="170" class="mono tab">out.js</text>
+    <line x1="14" y1="179" x2="276" y2="179" stroke="#262c36"/>
+    <rect x="37" y="203" width="206" height="15" rx="3" fill="#3fb950" fill-opacity="0.12"/>
+    <text class="mono code" xml:space="preserve">
+      <tspan x="26" y="198">style.<tspan class="prop">textContent</tspan> =</tspan>
+      <tspan x="26" y="214">  <tspan class="str">".card{padding:1rem}.title{…}"</tspan>;</tspan>
+      <tspan x="26" y="230">shadow.<tspan class="fn">append</tspan>(style);</tspan>
+    </text>
+
+    <rect x="14" y="260" width="262" height="128" rx="8" class="file"/>
+    <path d="M22 260 h246 a8 8 0 0 1 8 8 v14 h-262 v-14 a8 8 0 0 1 8 -8 z" fill="#161b22"/>
+    <circle cx="28" cy="271" r="3.5" fill="#f85149" fill-opacity="0.7"/>
+    <circle cx="40" cy="271" r="3.5" fill="#d29922" fill-opacity="0.7"/>
+    <circle cx="52" cy="271" r="3.5" fill="#3fb950" fill-opacity="0.7"/>
+    <text x="66" y="275" class="sans tab">Elements</text>
+    <line x1="14" y1="282" x2="276" y2="282" stroke="#262c36"/>
+    <text class="mono code" xml:space="preserve">
+      <tspan x="26" y="302"><tspan class="tag">&lt;my-element&gt;</tspan></tspan>
+      <tspan x="26" y="318" class="muted">  #shadow-root (open)</tspan>
+      <tspan x="26" y="334">    <tspan class="tag">&lt;style&gt;</tspan>.card{…}<tspan class="tag">&lt;/style&gt;</tspan></tspan>
+      <tspan x="26" y="350">    <tspan class="tag">&lt;div</tspan> <tspan class="prop">class</tspan>=<tspan class="str">"card"</tspan><tspan class="tag">&gt;</tspan></tspan>
+    </text>
+    <circle cx="31" cy="371" r="6" fill="#3fb950" fill-opacity="0.18"/>
+    <path d="M28 371 l2.2 2.2 l4 -4.4" fill="none" stroke="#3fb950" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="43" y="375" class="sans note" fill="#3fb950" style="fill:#3fb950">styles live inside the shadow root</text>
+  </g>
+
+  <!-- connectors -->
+  <g>
+    <circle cx="342.5" cy="250" r="14" fill="#161b22" stroke="#30363d"/>
+    <path d="M341 244 l6 6 l-6 6" fill="none" stroke="#8b949e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <line x1="677.5" y1="266" x2="677.5" y2="430" stroke="#a78bfa" stroke-opacity="0.55" stroke-width="1.5" stroke-dasharray="3 5"/>
+    <circle cx="677.5" cy="250" r="20" fill="#a78bfa" fill-opacity="0.35" filter="url(#soft)"/>
+    <circle cx="677.5" cy="250" r="14" fill="#1e1533" stroke="#a78bfa"/>
+    <path d="M676 244 l6 6 l-6 6" fill="none" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- plugin internals -->
+  <rect x="30" y="430" width="960" height="140" rx="14" fill="url(#panel)" stroke="#a78bfa" stroke-opacity="0.35"/>
+  <circle cx="677.5" cy="430" r="3.5" fill="#a78bfa"/>
+  <text x="54" y="461" class="sans h2">Inside <tspan class="mono purple" font-weight="500">shadowStyle()</tspan></text>
+  <text x="966" y="461" text-anchor="end" class="sans note">runs in generateBundle, after Vite has emitted the CSS</text>
+
+  <g class="sans">
+    <g transform="translate(54 480)">
+      <rect width="210" height="66" rx="10" fill="#0d1117" stroke="#2d2640"/>
+      <text x="14" y="25" class="mono num">01</text><text x="40" y="25" class="step-title">Collect</text>
+      <text x="14" y="49" class="step-desc">the CSS asset Vite emitted</text>
+    </g>
+    <path d="M270 507 l5 6 l-5 6" fill="none" stroke="#6e5a9e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(288 480)">
+      <rect width="210" height="66" rx="10" fill="#0d1117" stroke="#2d2640"/>
+      <text x="14" y="25" class="mono num">02</text><text x="40" y="25" class="step-title">Locate</text>
+      <text x="14" y="49" class="step-desc">every <tspan class="mono ph" font-size="11">SHADOW_STYLE</tspan>, via the AST</text>
+    </g>
+    <path d="M504 507 l5 6 l-5 6" fill="none" stroke="#6e5a9e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(522 480)">
+      <rect width="210" height="66" rx="10" fill="#0d1117" stroke="#2d2640"/>
+      <text x="14" y="25" class="mono num">03</text><text x="40" y="25" class="step-title">Inline</text>
+      <text x="14" y="49" class="step-desc">the CSS as a safe JS string</text>
+    </g>
+    <path d="M738 507 l5 6 l-5 6" fill="none" stroke="#6e5a9e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(756 480)">
+      <rect width="210" height="66" rx="10" fill="#0d1117" stroke="#2d2640"/>
+      <text x="14" y="25" class="mono num">04</text><text x="40" y="25" class="step-title">Align</text>
+      <text x="14" y="49" class="step-desc">keeps sourcemaps in sync</text>
+    </g>
+  </g>
+</svg>

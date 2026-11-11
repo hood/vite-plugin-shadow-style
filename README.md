@@ -8,6 +8,10 @@
 This plugin allows you to inject css styles into the shadow root of your web
 components.
 
+<p align="center">
+  <img src="./assets/how-it-works.svg" alt="How vite-plugin-shadow-style works: SHADOW_STYLE in your component is replaced at build time with the bundled CSS, so the styles land inside the shadow root" width="100%" />
+</p>
+
 
 ## How to install
 Just run a simple
